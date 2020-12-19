@@ -4,6 +4,7 @@
 #include "blockfactory.h"
 #include "blocksudoku.h"
 
+#include <atomic>
 #include <memory>
 #include <mutex>
 
@@ -22,24 +23,25 @@ struct PlayState
 
 // Counts all possible moves with every block on the board
 // This is an intensive operation!
-float CountAllMoves(MatrixXi board) {
+ArrayXf CountAllMoves(MatrixXi board) {
   BlockFactory factory;
   vector<MatrixXi> blockList = factory.GetBlockList();
   ArrayXf blockMoves((int)blockList.size());
   for(int i=0;i<blockList.size();i++) {
     blockMoves(i) = (float)BlockSudoku::GetAllValidMoves(blockList[i], board).sum();
   }
-  return blockMoves.mean();
+  return blockMoves;
 } 
 
 vector<PlayState> RunThruPlayStates(vector<PlayState> playStates)
 {
   // Should put this somewhere better
-  const int TargetTreeChildren = 81;
+  const int TargetTreeChildren = 3;
 
   vector<PlayState> newPlayStates;
   std::mutex mylock;
 
+  // Calculate this all in parallel
   #pragma omp parallel for
   for(int i=0;i<playStates.size();i++) {
     vector<PlayState> subPlayStates;
@@ -62,6 +64,7 @@ vector<PlayState> RunThruPlayStates(vector<PlayState> playStates)
         }
       }
     }
+
     // Add to final play states
     mylock.lock();
     newPlayStates.insert(newPlayStates.end(), subPlayStates.begin(), subPlayStates.end());
@@ -71,15 +74,37 @@ vector<PlayState> RunThruPlayStates(vector<PlayState> playStates)
   return newPlayStates;
 }
 
+// Adapted from: http://rosettacode.org/wiki/Combinations#C.2B.2B
+vector<vector<int>> comb(int N, int K)
+{
+    vector<vector<int>> res;
+    std::string bitmask(K, 1); // K leading 1's
+    bitmask.resize(N, 0); // N-K trailing 0's
+ 
+    // print integers and permute bitmask
+    do {
+        vector<int> subres;
+        for (int i = 0; i < N; ++i) // [0..N-1] integers
+        {
+          if (bitmask[i]) subres.push_back(i);
+        }
+        res.push_back(subres);
+    } while (std::prev_permutation(bitmask.begin(), bitmask.end()));
+
+    return res;
+}
+ 
+
 struct PlayStateMoves
 {
   PlayState* playState;
   float possibleMoves;
+  ArrayXf allMoves;
 };
 
 int DoIteration()
 {
-  const int MaxIterations = 100;
+  const int MaxIterations = 1000;
   int currentIteration = 0;
   int bestScore = 0;
   vector<PlayState> playStates;
@@ -114,7 +139,10 @@ int DoIteration()
     #pragma omp parallel for
     for(int i=0;i<playStates.size();i++) {
       playStateMoves[i].playState = &playStates[i];
-      playStateMoves[i].possibleMoves = CountAllMoves(playStateMoves[i].playState->board);
+      ArrayXf allMoves = CountAllMoves(playStateMoves[i].playState->board);
+      playStateMoves[i].possibleMoves = allMoves.mean();
+      playStateMoves[i].allMoves = allMoves;
+
     }
 
     // Find the max state and make it the new play state
@@ -130,6 +158,25 @@ int DoIteration()
     // Only take the best move
     cout << "State " << maxRecord << " has the best play at " << maxMoves << endl;
     PlayState bestPlayState = *(playStateMoves[maxRecord].playState);
+
+    // Calculate the percentage chance of having an optimal combo
+    vector<MatrixXi> blockList = blockFactory.GetBlockList();
+    vector<vector<int>> combos = comb(playStateMoves[maxRecord].allMoves.size(), QUEUE_DEPTH);
+
+    atomic<int> possibleCombos(0);
+    #pragma omp parallel for
+    for(int j=0;j<combos.size();j++) {
+      for(int k=0;k<combos[j].size();k++) {
+        if(playStateMoves[maxRecord].allMoves[combos[j][k]] != 0) {
+          possibleCombos++;
+          break;
+        }
+      }
+    }
+    cout << possibleCombos << "/" << combos.size() << endl;
+    float chanceOfPossibleCombo = (float)possibleCombos / (float)combos.size();
+
+    // Regenerate blocks
     bestPlayState.blockQueue = blockFactory.GenerateRandomBlocks(QUEUE_DEPTH);
     bestScore = bestPlayState.score;
     playStates.clear();
@@ -143,6 +190,7 @@ int DoIteration()
       cout << bestPlayState.blockQueue[i] << endl;
     }
     cout << "Score: " << bestPlayState.score << endl;
+    cout << "Chance of Possible Move: " <<  chanceOfPossibleCombo*100 << "%" << endl;
     cout << "Iteration " << currentIteration << " finished. " << endl << endl;
     ++currentIteration;
   }
