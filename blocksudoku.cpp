@@ -1,5 +1,7 @@
 #include "blocksudoku.h"
 
+#include <cassert>
+
 using namespace Eigen;
 using namespace std;
 
@@ -30,8 +32,9 @@ MatrixXi BlockSudoku::GetAllValidMoves(MatrixXi block, MatrixXi board)
     for(int x=0;x<9;x++) {
         for(int y=0;y<9;y++) {
             if(CheckIfValidMove(x, y, block, board)) {
-                int* moveCell = &validMoves(x,y);
-                *moveCell = 1;
+                //int* moveCell = &validMoves(x,y);
+                //*moveCell = 1;
+                validMoves(x,y) = 1;
             }
         }
     }
@@ -66,11 +69,14 @@ bool BlockSudoku::CheckIfValidMove(int x, int y, MatrixXi ablock, MatrixXi board
 // Places a 5x5 block on the 13x13 board. This mutates the board.
 bool BlockSudoku::PlaceBlock(int x, int y, MatrixXi block, MatrixXi* board)
 {
-    return false;
+    (*board).block(x, y, 5, 5) += block;
+    assert(board->maxCoeff() == 1);
+    return true;
 }
 
 // Clears the board. This mutates the board.
 int BlockSudoku::ClearBlocksAndScore(MatrixXi* board)
 {
+    
     return 0;
 }
