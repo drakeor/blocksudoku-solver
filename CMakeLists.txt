@@ -2,7 +2,15 @@ cmake_minimum_required(VERSION 3.5)
 
 project(bssolver VERSION 1.0)
 
+
 include_directories("${PROJECT_SOURCE_DIR}/eigen")
 
-add_executable(bssolver main.cpp blockfactory.cpp)
-add_executable(tests_bssolver main_test.cpp catch.cpp blockfactory.cpp)
+list(APPEND srclist "blockfactory.cpp")
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_CXX_FLAGS "-std=c++17")
+
+add_executable(bssolver main.cpp ${srclist})
+add_executable(tests_bssolver main_test.cpp catch.cpp blockfactory_tests.cpp ${srclist})

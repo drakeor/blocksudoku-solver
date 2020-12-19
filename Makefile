@@ -166,6 +166,33 @@ blockfactory.cpp.s:
 	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/blockfactory.cpp.s
 .PHONY : blockfactory.cpp.s
 
+blockfactory_tests.o: blockfactory_tests.cpp.o
+
+.PHONY : blockfactory_tests.o
+
+# target to build an object file
+blockfactory_tests.cpp.o:
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/blockfactory_tests.cpp.o
+.PHONY : blockfactory_tests.cpp.o
+
+blockfactory_tests.i: blockfactory_tests.cpp.i
+
+.PHONY : blockfactory_tests.i
+
+# target to preprocess a source file
+blockfactory_tests.cpp.i:
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/blockfactory_tests.cpp.i
+.PHONY : blockfactory_tests.cpp.i
+
+blockfactory_tests.s: blockfactory_tests.cpp.s
+
+.PHONY : blockfactory_tests.s
+
+# target to generate assembly for a file
+blockfactory_tests.cpp.s:
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/blockfactory_tests.cpp.s
+.PHONY : blockfactory_tests.cpp.s
+
 catch.o: catch.cpp.o
 
 .PHONY : catch.o
@@ -260,6 +287,9 @@ help:
 	@echo "... blockfactory.o"
 	@echo "... blockfactory.i"
 	@echo "... blockfactory.s"
+	@echo "... blockfactory_tests.o"
+	@echo "... blockfactory_tests.i"
+	@echo "... blockfactory_tests.s"
 	@echo "... catch.o"
 	@echo "... catch.i"
 	@echo "... catch.s"
