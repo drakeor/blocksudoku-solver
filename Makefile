@@ -193,6 +193,63 @@ blockfactory_tests.cpp.s:
 	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/blockfactory_tests.cpp.s
 .PHONY : blockfactory_tests.cpp.s
 
+blocksudoku.o: blocksudoku.cpp.o
+
+.PHONY : blocksudoku.o
+
+# target to build an object file
+blocksudoku.cpp.o:
+	$(MAKE) -f CMakeFiles/bssolver.dir/build.make CMakeFiles/bssolver.dir/blocksudoku.cpp.o
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/blocksudoku.cpp.o
+.PHONY : blocksudoku.cpp.o
+
+blocksudoku.i: blocksudoku.cpp.i
+
+.PHONY : blocksudoku.i
+
+# target to preprocess a source file
+blocksudoku.cpp.i:
+	$(MAKE) -f CMakeFiles/bssolver.dir/build.make CMakeFiles/bssolver.dir/blocksudoku.cpp.i
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/blocksudoku.cpp.i
+.PHONY : blocksudoku.cpp.i
+
+blocksudoku.s: blocksudoku.cpp.s
+
+.PHONY : blocksudoku.s
+
+# target to generate assembly for a file
+blocksudoku.cpp.s:
+	$(MAKE) -f CMakeFiles/bssolver.dir/build.make CMakeFiles/bssolver.dir/blocksudoku.cpp.s
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/blocksudoku.cpp.s
+.PHONY : blocksudoku.cpp.s
+
+blocksudoku_test.o: blocksudoku_test.cpp.o
+
+.PHONY : blocksudoku_test.o
+
+# target to build an object file
+blocksudoku_test.cpp.o:
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/blocksudoku_test.cpp.o
+.PHONY : blocksudoku_test.cpp.o
+
+blocksudoku_test.i: blocksudoku_test.cpp.i
+
+.PHONY : blocksudoku_test.i
+
+# target to preprocess a source file
+blocksudoku_test.cpp.i:
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/blocksudoku_test.cpp.i
+.PHONY : blocksudoku_test.cpp.i
+
+blocksudoku_test.s: blocksudoku_test.cpp.s
+
+.PHONY : blocksudoku_test.s
+
+# target to generate assembly for a file
+blocksudoku_test.cpp.s:
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/blocksudoku_test.cpp.s
+.PHONY : blocksudoku_test.cpp.s
+
 catch.o: catch.cpp.o
 
 .PHONY : catch.o
@@ -290,6 +347,12 @@ help:
 	@echo "... blockfactory_tests.o"
 	@echo "... blockfactory_tests.i"
 	@echo "... blockfactory_tests.s"
+	@echo "... blocksudoku.o"
+	@echo "... blocksudoku.i"
+	@echo "... blocksudoku.s"
+	@echo "... blocksudoku_test.o"
+	@echo "... blocksudoku_test.i"
+	@echo "... blocksudoku_test.s"
 	@echo "... catch.o"
 	@echo "... catch.i"
 	@echo "... catch.s"

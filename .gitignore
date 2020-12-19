@@ -1,5 +1,6 @@
 eigen/
 obj/
+bin/
 
 CMakeLists.txt.user
 CMakeCache.txt
