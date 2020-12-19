@@ -5,6 +5,7 @@
 #include "blocksudoku.h"
 
 #include <memory>
+#include <mutex>
 
 using namespace std;
 using namespace Eigen;
@@ -34,11 +35,14 @@ float CountAllMoves(MatrixXi board) {
 vector<PlayState> RunThruPlayStates(vector<PlayState> playStates)
 {
   // Should put this somewhere better
-  const int TargetTreeChildren = 3;
+  const int TargetTreeChildren = 81;
 
   vector<PlayState> newPlayStates;
+  std::mutex mylock;
 
+  #pragma omp parallel for
   for(int i=0;i<playStates.size();i++) {
+    vector<PlayState> subPlayStates;
     PlayState* cState = &playStates[i];
     for(int j=0;j<cState->blockQueue.size();j++) {
       MatrixXi cBlock = cState->blockQueue[j];
@@ -52,12 +56,16 @@ vector<PlayState> RunThruPlayStates(vector<PlayState> playStates)
             playState.score = BlockSudoku::ClearBlocksAndScore(&(playState.board)) + cState->score;
             playState.blockQueue = cState->blockQueue;
             playState.blockQueue.erase(playState.blockQueue.begin() + j);
-            newPlayStates.push_back(playState);
+            subPlayStates.push_back(playState);
             ++childCount;
           }
         }
       }
     }
+    // Add to final play states
+    mylock.lock();
+    newPlayStates.insert(newPlayStates.end(), subPlayStates.begin(), subPlayStates.end());
+    mylock.unlock();
   }
 
   return newPlayStates;
@@ -103,6 +111,7 @@ int DoIteration()
     auto playStateMoves = std::make_unique<PlayStateMoves[]>(playStates.size());
 
     // Expensive operation to run through all possible states
+    #pragma omp parallel for
     for(int i=0;i<playStates.size();i++) {
       playStateMoves[i].playState = &playStates[i];
       playStateMoves[i].possibleMoves = CountAllMoves(playStateMoves[i].playState->board);
