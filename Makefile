@@ -277,6 +277,63 @@ catch.cpp.s:
 	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/catch.cpp.s
 .PHONY : catch.cpp.s
 
+game.o: game.cpp.o
+
+.PHONY : game.o
+
+# target to build an object file
+game.cpp.o:
+	$(MAKE) -f CMakeFiles/bssolver.dir/build.make CMakeFiles/bssolver.dir/game.cpp.o
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/game.cpp.o
+.PHONY : game.cpp.o
+
+game.i: game.cpp.i
+
+.PHONY : game.i
+
+# target to preprocess a source file
+game.cpp.i:
+	$(MAKE) -f CMakeFiles/bssolver.dir/build.make CMakeFiles/bssolver.dir/game.cpp.i
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/game.cpp.i
+.PHONY : game.cpp.i
+
+game.s: game.cpp.s
+
+.PHONY : game.s
+
+# target to generate assembly for a file
+game.cpp.s:
+	$(MAKE) -f CMakeFiles/bssolver.dir/build.make CMakeFiles/bssolver.dir/game.cpp.s
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/game.cpp.s
+.PHONY : game.cpp.s
+
+game_test.o: game_test.cpp.o
+
+.PHONY : game_test.o
+
+# target to build an object file
+game_test.cpp.o:
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/game_test.cpp.o
+.PHONY : game_test.cpp.o
+
+game_test.i: game_test.cpp.i
+
+.PHONY : game_test.i
+
+# target to preprocess a source file
+game_test.cpp.i:
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/game_test.cpp.i
+.PHONY : game_test.cpp.i
+
+game_test.s: game_test.cpp.s
+
+.PHONY : game_test.s
+
+# target to generate assembly for a file
+game_test.cpp.s:
+	$(MAKE) -f CMakeFiles/tests_bssolver.dir/build.make CMakeFiles/tests_bssolver.dir/game_test.cpp.s
+.PHONY : game_test.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -356,6 +413,12 @@ help:
 	@echo "... catch.o"
 	@echo "... catch.i"
 	@echo "... catch.s"
+	@echo "... game.o"
+	@echo "... game.i"
+	@echo "... game.s"
+	@echo "... game_test.o"
+	@echo "... game_test.i"
+	@echo "... game_test.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
