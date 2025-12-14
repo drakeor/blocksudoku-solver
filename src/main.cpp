@@ -3,7 +3,7 @@
  
 #include "blockfactory.h"
 #include "blocksudoku.h"
-#include "Game.h"
+#include "game.h"
 
 #include <atomic>
 #include <memory>
